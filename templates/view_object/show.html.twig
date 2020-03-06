@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ViewObject{% endblock %}
+
+{% block body %}
+    <h1>ViewObject</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ view_object.id }}</td>
+            </tr>
+            <tr>
+                <th>MediaLink</th>
+                <td>{{ view_object.mediaLink }}</td>
+            </tr>
+            <tr>
+                <th>MinuteLink</th>
+                <td>{{ view_object.minuteLink }}</td>
+            </tr>
+            <tr>
+                <th>MediaType</th>
+                <td>{{ view_object.mediaType }}</td>
+            </tr>
+            <tr>
+                <th>MediaFormat</th>
+                <td>{{ view_object.mediaFormat }}</td>
+            </tr>
+            <tr>
+                <th>MinuteInterpreter</th>
+                <td>{{ view_object.minuteInterpreter }}</td>
+            </tr>
+            <tr>
+                <th>VisitCount</th>
+                <td>{{ view_object.visitCount }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ view_object.createdAt ? view_object.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ view_object.updatedAt ? view_object.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('view_object_index') }}">back to list</a>
+
+    <a href="{{ path('view_object_edit', {'id': view_object.id}) }}">edit</a>
+
+    {{ include('view_object/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Minute Audio Viewer{% endblock %}
+
+{% set chapters = '' %}
+{% set subChapters = '' %}
+
+{% for bookmark in minuteBookmarks|filter(bookmark => bookmark.category != constant('App\\Enums\\MinuteBookmarkCategory::AGENDA_ITEM')) %}
+    {% set subChapters = subChapters ~ '[' ~ (bookmark.position|slice(0,2)|number_format * 60 + bookmark.position|slice(3,2)|number_format) ~ bookmark.position|slice(5,3) ~ ']' ~ bookmark.title ~ '\\n' %}
+{% endfor %}
+
+{% block body %}
+<div class="container" style="margin-bottom:5rem!important;">
+    <div class="list-group mt-5">
+        {% for bookmark in minuteBookmarks|filter(bookmark => bookmark.category == constant('App\\Enums\\MinuteBookmarkCategory::AGENDA_ITEM')) %}
+            {% set chapters = chapters ~ '[' ~ (bookmark.position|slice(0,2)|number_format * 60 + bookmark.position|slice(3,2)|number_format) ~ bookmark.position|slice(5,3) ~ ']' ~ bookmark.title ~ '\\n' %}
+            <div onclick="cPlayer.setCurrentTime('{{ bookmark.position|slice(0,2)|number_format * 60 * 60 + bookmark.position|slice(3,2)|number_format * 60 + bookmark.position|slice(6,2)|number_format }}')" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ bookmark.title }}</h5>
+                    <small>{{ bookmark.position }}</small>
+                </div>
+                {% if bookmark.description != '' %}
+                    <p class="mb-1">{{ bookmark.description }}</p>
+                {% endif %}
+                <small>{{ bookmark.category }}</small>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="app" class="container" style="position:fixed;bottom:10px;left:0;right:0;z-index:1;"></div>
+</div>
+
+<script src="{{ asset('cplayer/cplayer.js') }}"></script>
+<script>
+    let cPlayer = new cplayer({
+        element: document.getElementById('app'),
+        playlist: [
+            {
+                src: '{{ viewObject.mediaLink }}',
+                name: '{{ viewObject.minuteInterpreter }}',
+                artist: 'Versie {{ viewObject.minuteVersion }}',
+                lyric: '{{ chapters }}',
+                sublyric: '{{ subChapters }}',
+            }
+        ],
+        width: '100%',
+        showPlaylistButton: 'false',
+        dropDownMenuMode: 'none'
+    });
+
+    window.onkeydown = function (event) {
+        if (event.keyCode === 32) {
+            event.preventDefault();
+        }
+    };
+
+    window.onkeyup = function (event) {
+        if (event.keyCode === 32) {
+            event.preventDefault();
+            cPlayer.togglePlayState();
+        }
+    };
+
+    function hideElementByClass(elementClassName){
+        let classElements = document.getElementsByClassName(elementClassName);
+        for(var i=0; i < classElements.length; i++) {
+            classElements[i].style.display = 'none';
+        }
+    }
+
+    hideElementByClass('cp-poster');
+    hideElementByClass('cp-prev-button');
+    hideElementByClass('cp-next-button');
+    hideElementByClass('cp-list-button');
+    hideElementByClass('cp-mode-button');
+</script>
+{% endblock %}

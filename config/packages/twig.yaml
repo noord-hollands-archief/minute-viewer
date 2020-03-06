@@ -1,0 +1,6 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    globals:
+        app_version: '%env(APP_VERSION)%'
+        app_version_date: '%env(APP_VERSION_DATE)%'
+        g_analytics_tag: '%env(G_ANALYTICS_TAG)%'

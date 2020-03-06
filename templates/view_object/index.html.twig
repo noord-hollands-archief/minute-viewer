@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ViewObject index{% endblock %}
+
+{% block body %}
+    <h1>ViewObject index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>MediaLink</th>
+                <th>MinuteLink</th>
+                <th>MediaType</th>
+                <th>MediaFormat</th>
+                <th>MinuteInterpreter</th>
+                <th>VisitCount</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for view_object in view_objects %}
+            <tr>
+                <td>{{ view_object.id }}</td>
+                <td>{{ view_object.mediaLink }}</td>
+                <td>{{ view_object.minuteLink }}</td>
+                <td>{{ view_object.mediaType }}</td>
+                <td>{{ view_object.mediaFormat }}</td>
+                <td>{{ view_object.minuteInterpreter }}</td>
+                <td>{{ view_object.visitCount }}</td>
+                <td>{{ view_object.createdAt ? view_object.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ view_object.updatedAt ? view_object.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('view_object_show', {'id': view_object.id}) }}">show</a>
+                    <a href="{{ path('view_object_edit', {'id': view_object.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('view_object_new') }}">Create new</a>
+{% endblock %}

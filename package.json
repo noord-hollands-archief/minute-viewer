@@ -1,0 +1,17 @@
+{
+  "name": "minute-viewer",
+  "version": "1.0.0",
+  "description": "minute-viewer",
+  "main": "/",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Zandvliet",
+  "license": "ISC",
+  "dependencies": {
+    "cplayer": "^3.2"
+  }
+}

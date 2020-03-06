@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Minute Viewer{% endblock %}
+
+{% block body %}
+<div class="jumbotron">
+    <div class="container">
+        <h1>Audio & Video Minute Viewer</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h3>Manual view</h3>
+            {{ include('partials/_form.html.twig') }}
+            <h3 class="mt-4">Current supported files</h3>
+            <ul>
+                <li>
+                    <i class="fas fa-music"></i> Audio
+                    <ul>
+                        <li><code>.mp3</code></li>
+                    </ul>
+                </li>
+                <li>
+                    <i class="fas fa-video"></i> Video
+                    <ul>
+                        <li><i>Currently not supported</i></li>
+                    </ul>
+                </li>
+                <li>
+                    <i class="fas fa-book-open"></i> Minute
+                    <ul>
+                        <li><code>.xml</code> (notubiz v4.5)</li>
+                    </ul>
+                </li>
+            </ul>
+            <h3 class="mt-4">API documentation</h3>
+            <p>
+                Method: <code>POST</code><br />
+                URL: <code>{{ app.request.uri }}create-view/</code><br />
+                JSON body:
+<pre>{
+    "mediaLink": "https://source.com/link-to-file.mp3",
+    "minuteLink": "https://source.com/link-to-minute.xml"
+}</pre>
+                <b>Expected result:</b><br />
+                Status <kbd>201</kbd>
+<pre>{
+    "message": "created",
+    "url": "https://viewer.com/view/0f65b1a06443b92762550e422965fe84"
+}</pre>
+                <b>Error message:</b><br />
+                Status <kbd>200</kbd> or <kbd>400</kbd>
+<pre>{
+    "message": "Media file not found",
+}</pre>
+                <b>Possible results:</b>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>status</th>
+                            <th>message</th>
+                            <th>comment</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>201</td>
+                        <td>created</td>
+                        <td>with field url to viewer</td>
+                    </tr>
+                    <tr>
+                        <td>200</td>
+                        <td>media link not valid</td>
+                        <td>syntax error</td>
+                    </tr>
+                    <tr>
+                        <td>200</td>
+                        <td>media file not found</td>
+                        <td>no media file found with given link</td>
+                    </tr>
+                    <tr>
+                        <td>200</td>
+                        <td>minute link not valid</td>
+                        <td>syntax error</td>
+                    </tr>
+                    <tr>
+                        <td>200</td>
+                        <td>minute file not found</td>
+                        <td>no minute file found with given link</td>
+                    </tr>
+                    <tr>
+                        <td>200</td>
+                        <td>missing value: mediaLink</td>
+                        <td>missing value in json body</td>
+                    </tr>
+                    <tr>
+                        <td>200</td>
+                        <td>missing value: minuteLink</td>
+                        <td>missing value in json body</td>
+                    </tr>
+                    <tr>
+                        <td>400</td>
+                        <td>invalid body send</td>
+                        <td>incorrect body type send</td>
+                    </tr>
+                </table>
+            </p>
+        </div>
+    </div>
+</div>
+<footer class="jumbotron mt-5 mb-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+
+            </div>
+            <div class="col-6 text-center">
+                <a href="https://noord-hollandsarchief.nl" target="_blank">noord-hollands archief</a><br />
+                <a href="mailto:thomas.zandvliet@noord-hollandsarchief.nl">Thomas Zandvliet</a>
+            </div>
+            <div class="col-3 text-right mt-4">
+                <i style="font-size:0.7em;">V{{ app_version }} ({{ app_version_date }})</i>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}
