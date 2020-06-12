@@ -96,18 +96,12 @@ class ViewObjectInterpreter
 
     static private function getMinuteData(string $minuteLink): array
     {
-        try {
-            $response = file_get_contents(
-                $minuteLink,
-                false,
-                stream_context_create([
-                    "ssl" => [
-                        "verify_peer" => false,
-                        "verify_peer_name" => false,
-                    ],
-                ])
-            );
-        } catch(\Exception $e) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+        curl_setopt($ch, CURLOPT_URL, $minuteLink);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        if(FALSE === ($response = curl_exec($ch))) {
+            error_log(curl_error($ch));
             return [];
         }
 
